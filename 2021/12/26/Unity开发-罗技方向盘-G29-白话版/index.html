@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="目录前言   最近在做罗技G29的方向盘的Unity开发，因为设备很贵(2000+)所以在买之前先进行了一波调研，看看用Unity开发的可行性。在翻看大量的文章之后我发现大多数文章的内容都是复制粘贴的，很蠢。在实际的开发中遇到了许多坑，我自己一点点爬了出来。想把这些个人的心得写出来，省的后人再去踩这些坑。  居然还有好多文章讲解用Unity的InputManager来调节摁键。人家罗技都提供SDk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity开发 罗技方向盘  G29 白话版">
+<meta property="og:url" content="http://example.com/2021/12/26/Unity%E5%BC%80%E5%8F%91-%E7%BD%97%E6%8A%80%E6%96%B9%E5%90%91%E7%9B%98-G29-%E7%99%BD%E8%AF%9D%E7%89%88/index.html">
+<meta property="og:site_name" content="答应我一起做个卷王好么">
+<meta property="og:description" content="目录前言   最近在做罗技G29的方向盘的Unity开发，因为设备很贵(2000+)所以在买之前先进行了一波调研，看看用Unity开发的可行性。在翻看大量的文章之后我发现大多数文章的内容都是复制粘贴的，很蠢。在实际的开发中遇到了许多坑，我自己一点点爬了出来。想把这些个人的心得写出来，省的后人再去踩这些坑。  居然还有好多文章讲解用Unity的InputManager来调节摁键。人家罗技都提供SDk">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190419165003389.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4MjQ0Nzgz,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2021-12-26T01:49:59.000Z">
+<meta property="article:modified_time" content="2022-02-09T01:52:59.032Z">
+<meta property="article:author" content="DdATM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190419165003389.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4MjQ0Nzgz,size_16,color_FFFFFF,t_70">
+
+
+<link rel="canonical" href="http://example.com/2021/12/26/Unity%E5%BC%80%E5%8F%91-%E7%BD%97%E6%8A%80%E6%96%B9%E5%90%91%E7%9B%98-G29-%E7%99%BD%E8%AF%9D%E7%89%88/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/26/Unity%E5%BC%80%E5%8F%91-%E7%BD%97%E6%8A%80%E6%96%B9%E5%90%91%E7%9B%98-G29-%E7%99%BD%E8%AF%9D%E7%89%88/","path":"2021/12/26/Unity开发-罗技方向盘-G29-白话版/","title":"Unity开发 罗技方向盘  G29 白话版"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Unity开发 罗技方向盘  G29 白话版 | 答应我一起做个卷王好么</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">答应我一起做个卷王好么</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">苟日新 日日新</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E9%98%B6%E6%AE%B5"><span class="nav-number">1.3.</span> <span class="nav-text">测试阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E5%A4%B1%E8%B4%A5%E7%9A%84%E8%A7%A3%E5%86%B3"><span class="nav-number">1.3.1.</span> <span class="nav-text">运行失败的解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5Unity"><span class="nav-number">1.4.</span> <span class="nav-text">接入Unity</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.4.1.</span> <span class="nav-text">Demo的使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5%E8%87%AA%E5%B7%B1%E7%9A%84%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.4.2.</span> <span class="nav-text">接入自己的项目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E4%B8%8E%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">问题与总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.5.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">DdATM</p>
+  <div class="site-description" itemprop="description">‘我是不知道是犯了什么大病 花一天时间研究这个东西’</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/26/Unity%E5%BC%80%E5%8F%91-%E7%BD%97%E6%8A%80%E6%96%B9%E5%90%91%E7%9B%98-G29-%E7%99%BD%E8%AF%9D%E7%89%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DdATM">
+      <meta itemprop="description" content="‘我是不知道是犯了什么大病 花一天时间研究这个东西’">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="答应我一起做个卷王好么">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Unity开发 罗技方向盘  G29 白话版
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-26 09:49:59" itemprop="dateCreated datePublished" datetime="2021-12-26T09:49:59+08:00">2021-12-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-02-09 09:52:59" itemprop="dateModified" datetime="2022-02-09T09:52:59+08:00">2022-02-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>   最近在做罗技G29的方向盘的Unity开发，因为设备很贵(2000+)所以在买之前先进行了一波调研，看看用Unity开发的可行性。在翻看大量的文章之后我发现大多数文章的内容都是复制粘贴的，很蠢。在实际的开发中遇到了许多坑，我自己一点点爬了出来。想把这些个人的心得写出来，省的后人再去踩这些坑。</p>
+<p> 居然还有好多文章讲解用Unity的InputManager来调节摁键。人家罗技都提供SDk了 还教别人用Input.GetKeyDown(KeyCode.JoystickButton0) 这种方法。看着就气。还有什么Unity最多支持24个摁键的 离合要自己写的。。。不要坑我们萌新了好么。</p>
+<p>   萌新一名 有错误还请大神指点。<br><strong>就是因为萌新 好多东西需要百度，百度一个不会的 会出现三个不会的名词来给你解释，到头来不会的东西更多了，所以这篇文章会以掰皮说陷的方式讲解</strong></p>
+<p><strong>不要问我 为什么要这样做，这么做对了就行 详细的自己去看英文文档去</strong> </p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p><a target="_blank" rel="noopener" href="https://www.logitechg.com/en-us/partnerdeveloperlab/sdk-resource-list/steering-wheel-sdk.html">罗技官网下载最新版的SDK</a><br>我在用的时候是8.75.30版 可以参考下</p>
+<p><a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/tools/integration/logitech-gaming-sdk-6630">Asset Store下载Logitech Gaming SDK</a><br>我在开发时是1.7版本<br>把这个在AssetStore下载号的包 导入Unity<br><strong>注意第一个坑</strong><br><strong>找到罗技官网下载的SDK文件夹 用该文件夹下的LogitechSteeringWheelEnginesWrapper.dll文件 替换掉  你的工程名\Asset\Logitech SDK\目录下 同名文件</strong><br>目前版本AssetStore上的SDK有这个问题 不替换掉会报错，而且这个问题在上一个版本的SDK中也存在(就是罗技的人懒得改)。未来可能会在某个版本修复这个问题吧。</p>
+<p><a target="_blank" rel="noopener" href="https://support.logitech.com.cn/zh_cn/product/g29-driving-force/downloads#">下载Logitech游戏软件</a><br><strong>这里第二个坑</strong><br><strong>罗技这个驱动软件越做越烂。 这里尽量下载 Logitech游戏软件 不要选择Logitech G Hub</strong><br><strong>G Hub 下载不稳定有的时候会很慢 而且有的时候会识别不到方向盘，所以还是选择老版本的Logitech游戏软件吧</strong><br><strong>这个坑在于这个软件是 区分Windows版本的 win7 win8 win10 32位 64位 会有区别 请选择跟自己电脑适配的版本</strong><br>我这里开发使用是 Win10 64位</p>
+<h2 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h2><p>开始测试时 请先打开Logitech游戏软件 保持后台运行，先确保游戏软件已经识别到了 方向盘。<br>将\Assets\Logitech SDK\Script Sample下的LogitechSteeringWheel.cs脚本添加到摄影机上（这个文件下的其他脚本是控制其他的输入设备的，有兴趣可以了解一下）。<br>运行场景<br><img src="https://img-blog.csdnimg.cn/20190419165003389.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI4MjQ0Nzgz,size_16,color_FFFFFF,t_70"><br>一切正常 就会是这个样子的，这时候操作你的方向盘 挡杆 脚踏板 来看看都对应哪些数值吧。VS打开这个脚本 就可以找到对应的代码了。</p>
+<h3 id="运行失败的解决"><a href="#运行失败的解决" class="headerlink" title="运行失败的解决"></a>运行失败的解决</h3><p>红色报错的 / x64 / logitechlcdengineswrapper.dll 类似这样<br>按照上面的方法 替换下 logitechlcdengineswrapper.dll 这个文件</p>
+<p>没有红色报错 项目可以运行 但是没有数值 提示<br>PLEASE PLUG IN A STEERING WHEEL OR A FORCE FEEDBACK<br>CONTROLLER（请插入方向盘或力反馈控制器）<br>这种的  请按照一下说明一次排查。</p>
+<ol>
+<li>可能是缺少一下C++基础库<br>这个建议你搜索下Aio runtimes 这是一个检测电脑缺什么基础库的软件 很无脑 不点击 30秒后也会自己安装。<br>重新启动Unity 项目查看是否正常运行。</li>
+<li>检查下Logite游戏软件是否检测到方向盘，是否可以正常改键（改一个按键 对应鼠标的右键 在桌面试试 ）不正常重新插拔设备，检查驱动。</li>
+<li>在Windows下正常 在Unity测试界面仍然显示  请插入设备  并且拔下设备 重新插入设备 Unity的控制台会输出 Joystick disconnected（“G29 Driving force Racing Wheel”）<pre><code>             Joystick reconnected（“G29 Driving force Racing Wheel”）这种情况请参考
+             [ 罗技官方交流社区  终极解决办法](https://community.logitech.com/s/question/0D55A000079eeu4SAA/g29-steering-wheel-does-not-work-with-unity-2017)
+</code></pre>
+简单翻译一下就是 卸载Logitech游戏软件 找到设备管理器（我的电脑右键属性-设备管理器）<br>找到 <strong>声音、视频和游戏控制器</strong> 卸载这里的罗技设备驱动 拔掉设备 重启计算机 完整安装一次 Logitech游戏软件 最后重新插入 罗技方向盘。<br>（<em>我的5个电脑有3台碰到了这个问题 最后靠这条官方解释修好的。据我猜测可能是因为windows自己安装的驱动会跟Logitech游戏软件的驱动有冲突吧。插入设备的时候Windows会自动帮我们装方向盘的驱动，所以我尝试在离线状态安装 Logitech游戏软件  插入方向盘 最后都好用了。也许是玄学吧。总之这个问题困扰了我2天半的时间 最后终于修好了</em>）</li>
+</ol>
+<h2 id="接入Unity"><a href="#接入Unity" class="headerlink" title="接入Unity"></a>接入Unity</h2><h3 id="Demo的使用方法"><a href="#Demo的使用方法" class="headerlink" title="Demo的使用方法"></a>Demo的使用方法</h3><p>场景成功运行会得到 上一章图片一样的结果。这时候我们可以操作方向盘 脚踏板 档杆 来查看这些输入对应哪一个值。<br>下面还会告诉你 摁 s c d 方向键 等键位调整不同的效果。<br>到这里 能力强一点的就可以 自己阅读源码 来更改这些数值 然后用到自己的工程中了<br>这里 我仅列出一些比较重要的，震动等可以自行翻看官方文档（SDK包里面就有）<br>方向盘 X-axis Position 右32767 初始0 左-32767<br>油门  Y-axis Position 踩死-32767 初始0 抬起 32767<br>制动  z-axis rotation 踩死 -32767初始0抬起 32767<br>离合器 extra axes positions 1 :踩死 -32767初始0抬起 32767<br>挡杆  button 12 -18  对应1-6挡+倒挡|  </p>
+<p>力反馈 需要在Logitech游戏软件中 设置-G29-允许在游戏中调节力反馈</p>
+<p>在测试中s键开启<br>源码中是下面这一句<br>参数1 是设备编号（就是第几个设备，我们就1个方向盘所以是第一个 填0）<br>参数2是中心位置（Demo里是50 所以你摁下s键 方向盘会自己动。0就是方向盘正中间的位置）<br>参数3 参数4 你去翻百度也看不懂的 一个是管松紧 一个管力度（大概）<br>总之你可以调试几次 找到自己满意的值。这里33 28 是我比较满意的手感。</p>
+<pre><code>LogitechGSDK.LogiPlaySpringForce(0, 0, 33, 28);
+</code></pre>
+<p><strong>这里Demo中还有好多 可以设置的 比如方向盘的震动等，有需要可以自己一个一个试，参考操作手册。就不一一解释了 关于这方面的博文有好多 基本都是机翻，看个人理解了</strong></p>
+<h3 id="接入自己的项目"><a href="#接入自己的项目" class="headerlink" title="接入自己的项目"></a>接入自己的项目</h3><p>这里就非常简单了 参考Demo的写法<br>Awake()或Start()方法中初始化</p>
+<pre><code>LogitechGSDK.LogiSteeringInitialize(false)
+</code></pre>
+<p>Update()方法里检测这些输入<br>这里我倾向进行一次封装 在Update里调用Input()<br>把检测输入的逻辑写入Input()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Update()</span><br><span class="line">&#123;</span><br><span class="line">  //一些其他需要帧调用的方法</span><br><span class="line">  //TODO</span><br><span class="line">    Input()</span><br><span class="line">   //进行封装 更加工整 更易修改</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<p>在Input里进行 设备输入检测</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Input()&#123;</span><br><span class="line">       if (LogitechGSDK.LogiUpdate() &amp;&amp; LogitechGSDK.LogiIsConnected(0))</span><br><span class="line">          &#123;</span><br><span class="line">           LogitechGSDK.DIJOYSTATE2ENGINES rec;</span><br><span class="line">           rec = LogitechGSDK.LogiGetStateUnity(0);</span><br><span class="line">           //TODO 这里就可以获取 想要的方向盘数据了</span><br><span class="line">          &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>if判断直接参考Demo写 就是SDK的帧调用判断设备是否接入<br>DIJOYSTATE2ENGINES是一个结构体 存储输入设备值的<br>这里 rec.lx 就直接得到方向盘旋转数据了。（自己对照Demo找）<br> rec.ly油门 rec.lRz刹车</p>
+<p>摁键<br>方向盘按键的三个方法 按下 抬起 按住 参数1 设备号 参数2 按键号<br>bool LogiButtonTriggered(int index, int buttonNbr); 按键检测<br>bool LogiButtonIsPressed(int index, int buttonNbr); 按键释放<br>bool LogiButtonReleased(int index, int buttonNbr);  按键按下<br>（<em>这里建议使用 按住与抬起做检测，因为我做项目的时候 这个按下检测可能会触发多次 不知道是硬件还是软件的问题。抬起就是触发一次 没有问题</em>）</p>
+<h2 id="问题与总结"><a href="#问题与总结" class="headerlink" title="问题与总结"></a>问题与总结</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>这里说结果我见到的提问</p>
+<ul>
+<li>游戏进出 油门 离合 刹车 方向盘 初始值都是0 怎么破 必须动一下才正常。<br>你设计一个打火摁键不就好了 这样不仅游戏更真实了，还解决了这个问题。<br>其实随便摁一个键子都可以的。</li>
+<li>有的时候调试调试 方向盘就不好使了。<br>罗技文档里有写，方向盘必须在页面最前端才是好用的（就是那个 初始化 判断那块 ）所以有的时候我们 切屏或者打开Unity的控制台 就会这样。因为这个时候Game视图不是最前端的视图了。</li>
+<li>力反馈没有<br>检查你开没开Logitech游戏软件  设置 允许游戏中调节力反馈 勾选没有（这个软件主要管的就是力反馈这些东西，你可以尝试 在游戏运行过程中 关掉这个软件，方向盘一下子就软了。。。。。）</li>
+<li>为什么我开车会翻啊？</li>
+</ul>
+<ol>
+<li> 你wheelCollider这块没玩好。很多数值需要调试</li>
+<li>你做的太真实了，现实中你这么开业翻车了</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>可别再Input.GetButtonDown(“Button3”) <pre><code>        Input.GetKeyDown(KeyCode.JoystickButton0)
+        这样了好么，人家有现成的不用，又蠢又丢人。
+</code></pre>
+</li>
+<li>这里推荐一篇我觉得写得不错的<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/Sakura_Jun/article/details/87718845">https://blog.csdn.net/Sakura_Jun/article/details/87718845</a></li>
+<li>开车插件<br><a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/tools/physics/realistic-car-controller-16296">Realistic Car Controller</a><br>还请大家支持正版。我就不给大家提供了，网盘见去吧，有什么不明白可以问我 大家共同学习。</li>
+<li>插件可能会更新 情况也许会不一样，没准那一天罗技修复了呢。</li>
+</ul>
+<p><strong>第一次写 有不对的请赐教，写得不好见谅，我会改进的。</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/25/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-chevron-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/04/C-Async-await%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%E5%8D%8F%E7%A8%8B/" rel="next" title="C# Async/await从入门到放弃协程">
+                  C# Async/await从入门到放弃协程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DdATM</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7}});</script></body>
+</html>
